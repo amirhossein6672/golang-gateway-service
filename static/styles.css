@@ -1,0 +1,138 @@
+/* Define CSS variables for the color theme */
+:root {
+  /* Black and White */
+  --custom-black: #0f0f0f;
+  --custom-white: #edf0f5;
+
+  /* Background Colors */
+  --light-background: #cbdae3;
+  --dark-background: #151520;
+
+  /* Primary Colors */
+  --light-primary: #6a8ec6;
+  --on-light-primary: rgba(106, 142, 198, 0.9); /* 90% opacity */
+  --dark-primary: #5a759e;
+  --on-dark-primary: rgba(90, 117, 158, 0.9); /* 90% opacity */
+
+  /* Secondary Colors */
+  --light-secondary: #edf0f5;
+  --on-light-secondary: rgba(237, 240, 245, 0.9); /* 90% opacity */
+  --dark-secondary: #192034;
+  --on-dark-secondary: rgba(25, 32, 52, 0.9); /* 90% opacity */
+
+  /* Warning Colors */
+  --light-warning: #e43e2b;
+  --on-light-warning: rgba(228, 62, 43, 0.9); /* 90% opacity */
+  --dark-warning: #e43e2b;
+  --on-dark-warning: rgba(228, 62, 43, 0.9); /* 90% opacity */
+
+  /* Success Colors */
+  --light-success: #2ba24c;
+  --on-light-success: rgba(43, 162, 76, 0.9); /* 90% opacity */
+  --dark-success: #2ba24c;
+  --on-dark-success: rgba(43, 162, 76, 0.9); /* 90% opacity */
+}
+
+/* General styling for body */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: var(--light-background);
+  color: var(--custom-black);
+  margin: 0;
+  padding: 0;
+}
+
+/* Dark mode styling */
+body.dark-mode {
+  background-color: var(--dark-background);
+  color: var(--custom-white);
+}
+
+/* Headers */
+header {
+  background-color: var(--light-primary);
+  color: var(--custom-white);
+  padding: 1rem;
+  text-align: center;
+}
+
+header.dark-mode {
+  background-color: var(--dark-primary);
+}
+
+/* Buttons */
+button {
+  background-color: var(--light-primary);
+  color: var(--custom-white);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--on-light-primary);
+}
+
+button.dark-mode {
+  background-color: var(--dark-primary);
+}
+
+button.dark-mode:hover {
+  background-color: var(--on-dark-primary);
+}
+
+/* Warnings */
+.warning {
+  background-color: var(--light-warning);
+  color: var(--custom-white);
+  padding: 1rem;
+}
+
+.warning.dark-mode {
+  background-color: var(--dark-warning);
+}
+
+/* Success Messages */
+.success {
+  background-color: var(--light-success);
+  color: var(--custom-white);
+  padding: 1rem;
+}
+
+.success.dark-mode {
+  background-color: var(--dark-success);
+}
+
+/* Secondary Text */
+.secondary-text {
+  color: var(--light-secondary);
+}
+
+.secondary-text.dark-mode {
+  color: var(--dark-secondary);
+}
+
+/* Containers and cards */
+.container {
+  background-color: var(--custom-white);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container.dark-mode {
+  background-color: var(--dark-secondary);
+  color: var(--custom-white);
+}
+
+.card {
+  background-color: var(--light-background);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.card.dark-mode {
+  background-color: var(--dark-background);
+}

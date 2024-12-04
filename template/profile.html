@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Dynamic Title -->
+    <title>{{.Title}}</title>
+
+    <!-- Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{.Description}}" />
+    <meta name="keywords" content="{{.Keywords}}" />
+    <meta name="author" content="{{.Author}}" />
+    <link rel="canonical" href="{{.CanonicalURL}}" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{{.Title}}" />
+    <meta property="og:description" content="{{.Description}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{.CanonicalURL}}" />
+    <meta property="og:image" content="{{.ImageURL}}" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{.Title}}" />
+    <meta name="twitter:description" content="{{.Description}}" />
+    <meta name="twitter:image" content="{{.ImageURL}}" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{.Username}}",
+        "description": "{{.Description}}",
+        "url": "{{.CanonicalURL}}",
+        "sameAs": []
+      }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Akeila:400,700" rel="stylesheet" />
+
+    <style>
+      body {
+        background-color: #cbdae3;
+        color: #0f0f0f;
+        font-family: "Akeila", serif;
+        font-size: 18px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .container {
+        background-color: #edf0f5;
+        width: 100%;
+        max-width: 650px;
+        margin: auto;
+        padding: 30px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+      }
+      .header {
+        color: #6a8ec6;
+        padding: 25px;
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        line-height: 2;
+        justify-content: center;
+        align-items: center;
+      }
+      .info {
+        flex: 2;
+        text-align: left;
+      }
+      .image-box {
+        flex: 1;
+        max-width: 180px;
+        height: 180px;
+        background-color: #d3d3d3;
+        border-radius: 15px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .footer {
+        font-size: 16px;
+        text-align: center;
+        margin-top: 30px;
+        color: #5a759e;
+      }
+      a {
+        color: #6a8ec6;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Centered Moving Gradient Glow Button */
+      .btn-redirect {
+        display: inline-block;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #edf0f5;
+        background-color: #6a8ec6;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        margin-top: 20px;
+      }
+
+      .btn-redirect::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, rgba(106, 142, 198, 0.5), rgba(90, 117, 158, 0.7), rgba(106, 142, 198, 0.5));
+        transition: all 0.5s ease;
+        border-radius: 25px;
+        z-index: 0;
+        transform: rotate(0deg);
+        animation: gradient-glow 3s infinite linear;
+      }
+
+      .btn-redirect:hover::before {
+        filter: brightness(1.3);
+      }
+
+      .btn-redirect span {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes gradient-glow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <script>
+      function redirectToWebVersion(username) {
+        const newUrl = `http://localhost:8080/web/${username}`;
+        window.location.href = newUrl;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">{{.Username}}'s Profile</div>
+      <div class="content">
+        <!-- User Info Section -->
+        <div class="info">
+          <p><strong>Bio:</strong> {{.Bio}}</p>
+          <p><strong>Joined:</strong> {{.CreatedAtSrt}}</p>
+        </div>
+        <!-- Image Box Section -->
+        <div class="image-box">
+          {{if .ImageURL}}
+          <img src="{{.ImageURL}}" alt="Profile Picture" />
+          {{else}}
+          <!-- Empty Box if no image -->
+          {{end}}
+        </div>
+      </div>
+      <!-- Redirect Button -->
+      <div class="content">
+        <button class="btn-redirect" onclick="redirectToWebVersion('{{.Username}}')">
+          <span>Open in App</span>
+        </button>
+      </div>
+      <div class="footer">example © 2024 | <a href="https://example.com">Visit our Website</a></div>
+    </div>
+  </body>
+</html>
