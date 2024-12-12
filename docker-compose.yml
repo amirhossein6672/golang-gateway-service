@@ -6,5 +6,5 @@ services:
       - "3000:3000"
     restart: always
     networks:
-      - frontend
-      - backend
+      - beauticket_frontend
+      - beauticket_backend
