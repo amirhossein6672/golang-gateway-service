@@ -64,16 +64,10 @@ func main() {
 	router := mux.NewRouter()
 
 	// Apply the logging middleware
-	router.Use(middleware.Logging)
-
-	// Serve static files (HTML, CSS, JS)
-	router.PathPrefix("/static/").Handler(handler.ServeStatic("static"))
-
-	// Serve Web App files (HTML, CSS, JS)
-	router.PathPrefix("/web/").Handler(handler.ServeWebApp("static/web"))
+	router.Use(middleware.Logging) 
 
 	// API reverse proxy
-	router.PathPrefix("/api/").Handler(handler.BackendProxy())
+	router.PathPrefix("/").Handler(handler.BackendProxy())
 
 	// Server-Side Rendering for profile page, capture the username in the URL
 	router.HandleFunc("/@{username}", handler.ServeProfilePage)
