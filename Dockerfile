@@ -1,23 +1,23 @@
-# Base image with Go installed
-FROM golang:1.20-alpine
+FROM golang:latest as build
 
-# Install supervisor to manage multiple services
-RUN apk add --no-cache supervisor
-
-# Set the working directory
 WORKDIR /app
 
-# Copy the source code for all services
-COPY ./ /app
+# Copy the Go module files
+COPY go.mod .
+COPY go.sum .
 
-# Copy the .env file into the container
-COPY ./.env /app/.env
+# Download the Go module dependencies
+RUN go mod download
 
-# Copy the supervisor config file
-COPY supervisord.conf /etc/supervisord.conf
+COPY . .
 
-# Expose port for gateway-service
-EXPOSE 8080
+RUN go build -o /myapp ./cmd/web
+ 
+FROM alpine:latest as run
 
-# Start all services using supervisord
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+# Copy the application executable from the build image
+COPY --from=build /myapp /myapp
+
+WORKDIR /app
+EXPOSE 3000
+CMD ["/myapp"]
