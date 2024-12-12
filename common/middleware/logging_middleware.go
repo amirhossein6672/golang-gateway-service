@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 	"fmt"
+	"io"
+	"bytes"
 )
 
 // wrappedWriter wraps ResponseWriter to capture the status code
