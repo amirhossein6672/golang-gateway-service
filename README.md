@@ -11,4 +11,4 @@ export GOPROXY=direct && export GOSUMDB=off  && go mod tidy
 export APP_ENV=development && go run ./main.go
 ```
 
-docker-compose -p gateway-service up --build
+docker-compose -p gateway-service up --build -d
