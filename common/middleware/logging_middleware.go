@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"bytes"
+	"strings"
 )
 
 // wrappedWriter wraps ResponseWriter to capture the status code
@@ -43,39 +44,40 @@ func Logging(next http.Handler) http.Handler {
 		r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		next.ServeHTTP(wrapped, r) // Proceed to the next handler
+		if strings.Contains(fmt.Sprintf("%v", r.Header) ,"uptimerobot") == false {
+			// Log the request details and response status
+			log.Println(
+				"➡️",
+				"handled request",
+				slog.Int("statusCode", wrapped.statusCode),
+				slog.String("method", r.Method),
+				slog.String("path", r.URL.Path),
+				slog.Any("duration", time.Since(start)),
+				slog.String("xff", r.Header.Get("X-Forwarded-For")),
+			)
 
-		// Log the request details and response status
-		log.Println(
-			"➡️",
-			"handled request",
-			slog.Int("statusCode", wrapped.statusCode),
-			slog.String("method", r.Method),
-			slog.String("path", r.URL.Path),
-			slog.Any("duration", time.Since(start)),
-			slog.String("xff", r.Header.Get("X-Forwarded-For")),
-		)
+			// Log the request details
+			log.Println(
+				"📥",
+				"request details",
+				slog.String("method", r.Method),
+				slog.String("path", r.URL.Path),
+				slog.String("headers", fmt.Sprintf("%v", r.Header)),
+				slog.String("body", string(bodyBytes)),
+				slog.String("queryParams", r.URL.RawQuery),
+				slog.String("xff", r.Header.Get("X-Forwarded-For")),
+			)
 
-		// Log the request details
-		log.Println(
-			"📥",
-			"request details",
-			slog.String("method", r.Method),
-			slog.String("path", r.URL.Path),
-			slog.String("headers", fmt.Sprintf("%v", r.Header)),
-			slog.String("body", string(bodyBytes)),
-			slog.String("queryParams", r.URL.RawQuery),
-			slog.String("xff", r.Header.Get("X-Forwarded-For")),
-		)
-
-		// Log the response details
-		log.Println(
-			"📤",
-			"response details",
-			slog.Int("statusCode", wrapped.statusCode),
-			slog.String("headers", fmt.Sprintf("%v", wrapped.Header())),
-			slog.Any("duration", time.Since(start)),
-			// Assuming the response body can be accessed via wrappedWriter
-			slog.String("responseBody", "(response body tracking not implemented)"),
-		)
+			// Log the response details
+			log.Println(
+				"📤",
+				"response details",
+				slog.Int("statusCode", wrapped.statusCode),
+				slog.String("headers", fmt.Sprintf("%v", wrapped.Header())),
+				slog.Any("duration", time.Since(start)),
+				// Assuming the response body can be accessed via wrappedWriter
+				slog.String("responseBody", "(response body tracking not implemented)"),
+			)
+		}
 	})
 }
