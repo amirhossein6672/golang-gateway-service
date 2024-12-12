@@ -1,7 +1,7 @@
 version: "3"
 services:
   gateway-service:
-    container_name: gateway-service:
+    container_name: gateway-service
     build: .
     ports:
       - "3000:3000"
