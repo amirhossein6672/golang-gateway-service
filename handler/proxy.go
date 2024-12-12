@@ -23,7 +23,7 @@ func BackendProxy() http.Handler {
 		}
 
 		switch {
-		case r.URL.Path == "/api/" || startsWith(r.URL.Path, "/api/"):
+		case r.URL.Path == "/" || startsWith(r.URL.Path, "/"):
 			target, err = url.Parse(baseUrl + ":" + os.Getenv("BACKEND_SERVICE_PORT"))
 		default:
 			http.Error(w, "Service not found", http.StatusNotFound)
