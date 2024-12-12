@@ -1,23 +1,16 @@
-FROM golang:latest as build
-
-WORKDIR /app
-
-# Copy the Go module files
-COPY go.mod .
-COPY go.sum .
-
-# Download the Go module dependencies
-RUN go mod download
-
-COPY . .
-
-RUN go build -o /myapp ./cmd/web
+FROM golang:latest
  
-FROM alpine:latest as run
-
-# Copy the application executable from the build image
-COPY --from=build /myapp /myapp
-
+# Set the Current Working Directory inside the container
 WORKDIR /app
+# Copy go mod file
+COPY go.mod ./
+# Download all dependencies. Dependencies will be cached if the go.mod file is not changed
+RUN go mod download
+# Copy the source from the current directory to the Working Directory inside the container
+COPY . .
+# Build the Go app
+RUN go build -o main .
+# Expose port 3000 to the outside world
 EXPOSE 3000
-CMD ["/myapp"]
+# Command to run the executable
+CMD ["./main"]
