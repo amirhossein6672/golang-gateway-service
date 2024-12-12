@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"time"
+	"fmt"
 )
 
 // wrappedWriter wraps ResponseWriter to capture the status code
@@ -29,6 +30,15 @@ func Logging(next http.Handler) http.Handler {
 			ResponseWriter: w,
 			statusCode:     http.StatusOK,
 		}
+
+		// Read and log the request body
+		bodyBytes, err := io.ReadAll(r.Body)
+		if err != nil {
+			log.Println("Error reading request body:", err)
+			return
+		}
+		// Restore the request body for further use
+		r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		next.ServeHTTP(wrapped, r) // Proceed to the next handler
 
