@@ -23,12 +23,8 @@ func BackendProxy() http.Handler {
 		}
 
 		switch {
-		case r.URL.Path == "/api/v1/profile" || startsWith(r.URL.Path, "/api/v1/profile/"):
-			target, err = url.Parse(baseUrl + ":" + os.Getenv("PROFILE_SERVICE_PORT"))
-		case r.URL.Path == "/api/v1/auth" || startsWith(r.URL.Path, "/api/v1/auth/"):
-			target, err = url.Parse(baseUrl + ":" + os.Getenv("AUTH_SERVICE_PORT"))
-		case r.URL.Path == "/api/v1/app-version" || startsWith(r.URL.Path, "/api/v1/app-version/"):
-			target, err = url.Parse(baseUrl + ":" + os.Getenv("APP_VERSION_SERVICE_PORT"))
+		case r.URL.Path == "/api/" || startsWith(r.URL.Path, "/api/"):
+			target, err = url.Parse(baseUrl + ":" + os.Getenv("BACKEND_SERVICE_PORT"))
 		default:
 			http.Error(w, "Service not found", http.StatusNotFound)
 			return
