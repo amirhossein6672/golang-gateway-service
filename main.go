@@ -82,8 +82,8 @@ func main() {
 		// AllowedOrigins defines which origins are permitted to access the resources.
 		// "*" allows all origins; in production, specify the exact origins.
 		AllowedOrigins: []string{"*"},
-		// AllowedHeaders: []string{"*"},
-		// AllowedMethods: []string{"*"},
+		AllowedHeaders: []string{"*"},
+		AllowedMethods: []string{"*"},
 		// AllowCredentials indicates whether the request can include user credentials like cookies.
 		AllowCredentials: true,
 	})
