@@ -12,7 +12,6 @@ import (
 	"golang-gateway-service/handler"
 	"time"
 
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
