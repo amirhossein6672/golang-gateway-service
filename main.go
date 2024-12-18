@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/rs/cors"
+	// "github.com/rs/cors"
 )
 
 const defaultPort = "8080"
@@ -77,21 +77,21 @@ func main() {
 	// Custom NotFoundHandler to serve 404.html page
 	router.NotFoundHandler = http.HandlerFunc(handler.NotFoundHandler)
 
-	// Set up CORS middleware with desired options
-	c := cors.New(cors.Options{
-		// AllowedOrigins defines which origins are permitted to access the resources.
-		// "*" allows all origins; in production, specify the exact origins.
-		AllowedOrigins: []string{"*"},
-		AllowedHeaders: []string{"*"},
-		AllowedMethods: []string{"*"},
-		// AllowCredentials indicates whether the request can include user credentials like cookies.
-		AllowCredentials: true,
-	})
+	// // Set up CORS middleware with desired options
+	// c := cors.New(cors.Options{
+	// 	// AllowedOrigins defines which origins are permitted to access the resources.
+	// 	// "*" allows all origins; in production, specify the exact origins.
+	// 	AllowedOrigins: []string{"*"},
+	// 	AllowedHeaders: []string{"*"},
+	// 	AllowedMethods: []string{"*"},
+	// 	// AllowCredentials indicates whether the request can include user credentials like cookies.
+	// 	AllowCredentials: true,
+	// })
 
-	// Wrap the router with the CORS middleware
-	handler := c.Handler(router)
+	// // Wrap the router with the CORS middleware
+	// handler := c.Handler(router)
 
 	// Start the server
 	log.Println("🚀 Gateway service is running on port:", port)
-	log.Fatal(http.ListenAndServe(":"+port, handler))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
