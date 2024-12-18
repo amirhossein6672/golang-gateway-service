@@ -11,6 +11,17 @@ import (
 // NewBackendProxy creates a reverse proxy that routes requests based on URL path
 func BackendProxy() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Add headers to allow CORS for all origins
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// Handle preflight requests
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		
 		// Determine which service to route based on the URL path
 		var target *url.URL
 		var err error
