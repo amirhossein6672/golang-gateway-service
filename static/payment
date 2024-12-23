@@ -97,6 +97,18 @@
             } else {
                 content = `
                     <h2 class="failure">Payment Failed</h2>
+                    ${data.amount === 'null' ? 
+                    `<div class="details">
+                        <div><strong>Amount Paid:</strong> ${data.amount}</div>
+                    </div>` : ''}
+                    ${data.paymentCode === 'null' ? 
+                    `<div class="details">
+                        <div><strong>Payment ID:</strong> ${data.paymentCode}</div>
+                    </div>` : ''}
+                    ${data.payDate === 'null' ? 
+                    `<div class="details">
+                        <div><strong>Date & Time:</strong> ${data.payDate}</div>
+                    </div>` : ''}
                     <p>Unfortunately, your payment has failed. Please try again later.</p>
                     <button class="button" onclick="buttonClicked()">Go to Home</button>
                 `;
@@ -106,7 +118,7 @@
         }
 
         function buttonClicked() {
-            Print.postMessage('home', '*');
+            Webviewchannel.postMessage('home', '*');
         }
 
         const queryParams = getQueryParams();
