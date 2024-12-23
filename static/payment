@@ -111,7 +111,7 @@
         }
 
         function buttonClicked() {
-            Print.postMessage('home');
+            window.webviewchannel.postMessage('home');
         }
 
         const queryParams = getQueryParams();
