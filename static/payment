@@ -92,7 +92,7 @@
                     ${data.bookingId === 'undefined' && data.reason === 'payAtStore' ? `
                         <p>New Payment Option Unlocked! You can now pay directly at the center.</p>
                     ` : ''}
-                    <button class="button" onclick="goHome()">Go to Home</button>
+                    <button class="button" onclick="buttonClicked()">Go to Home</button>
                 `;
             } else {
                 content = `
@@ -103,15 +103,15 @@
                         <div><strong>Date & Time:</strong> ${data.payDate}</div>
                     </div>
                     <p>Unfortunately, your payment has failed. Please try again later.</p>
-                    <button class="button" onclick="goHome()">Go to Home</button>
+                    <button class="button" onclick="buttonClicked()">Go to Home</button>
                 `;
             }
 
             container.innerHTML = content;
         }
 
-        function goHome() {
-            window.location.href = '/';
+        function buttonClicked() {
+            Print.postMessage('home');
         }
 
         const queryParams = getQueryParams();
