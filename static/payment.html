@@ -85,7 +85,7 @@
                     <div class="details">
                         <div><strong>Ödenen Tutar:</strong> ${data.amount}</div>
                         <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
-                        ${data.bookingId && data.bookingId !== 'undefined' ? `<div><strong>Rezervasyon Kodu:</strong> ${data.bookingId}</div>` : ''}
+                        ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null'  ? `<div><strong>Rezervasyon Kodu:</strong> ${data.bookingId}</div>` : ''}
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
                         <div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>
                     </div>
