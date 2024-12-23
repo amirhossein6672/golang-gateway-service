@@ -68,6 +68,9 @@ func main() {
 	// Apply the logging middleware
 	router.Use(middleware.Logging) 
 
+	// Serve static files (HTML, CSS, JS)
+	router.PathPrefix("/static/").Handler(handler.ServeStatic("static"))
+
 	// API reverse proxy
 	router.PathPrefix("/").Handler(handler.BackendProxy())
 

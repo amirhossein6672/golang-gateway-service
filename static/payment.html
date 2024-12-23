@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .success {
+            color: green;
+        }
+        .failure {
+            color: red;
+        }
+        .details {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .details div {
+            margin-bottom: 10px;
+        }
+        .button {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="payment-result">
+        <!-- Content will be injected dynamically -->
+    </div>
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                status: params.get('status'),
+                paymentId: params.get('paymentId'),
+                paymentCode: params.get('paymentCode'),
+                conversationId: params.get('conversationId'),
+                bookingCode: params.get('bookingCode'),
+                bookingId: params.get('bookingId'),
+                reason: params.get('reason'),
+                amount: params.get('amount'),
+                date: params.get('date'),
+                payDate: params.get('payDate'),
+                mdStatus: params.get('mdStatus'),
+                isTipPayment: params.get('isTipPayment') === 'true'
+            };
+        }
+
+        function renderResult(data) {
+            const container = document.getElementById('payment-result');
+            let content = '';
+
+            if (data.status === 'success') {
+                content = `
+                    <h2 class="success">Payment Successful</h2>
+                    <div class="details">
+                        <div><strong>Amount Paid:</strong> ${data.amount}</div>
+                        <div><strong>Payment ID:</strong> ${data.paymentCode}</div>
+                        ${data.bookingId && data.bookingId !== 'null' ? `<div><strong>Booking ID:</strong> ${data.bookingCode}</div>` : ''}
+                        <div><strong>Date & Time:</strong> ${data.payDate}</div>
+                    </div>
+                    ${data.bookingId === 'null' && data.reason === 'payAtStore' ? `
+                        <p>New Payment Option Unlocked! You can now pay directly at the center.</p>
+                    ` : ''}
+                    <button class="button" onclick="goHome()">Go to Home</button>
+                `;
+            } else {
+                content = `
+                    <h2 class="failure">Payment Failed</h2>
+                    <div class="details">
+                        <div><strong>Amount Paid:</strong> ${data.amount}</div>
+                        <div><strong>Payment ID:</strong> ${data.paymentCode}</div>
+                        <div><strong>Booking ID:</strong> ${data.bookingCode}</div>
+                        <div><strong>Date & Time:</strong> ${data.payDate}</div>
+                    </div>
+                    <p>Unfortunately, your payment has failed. Please try again later.</p>
+                    <button class="button" onclick="goHome()">Go to Home</button>
+                `;
+            }
+
+            container.innerHTML = content;
+        }
+
+        function goHome() {
+            window.location.href = '/';
+        }
+
+        const queryParams = getQueryParams();
+        renderResult(queryParams);
+    </script>
+</body>
+</html>
