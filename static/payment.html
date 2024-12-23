@@ -89,7 +89,7 @@
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
                         <div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>
                     </div>
-                    ${data.bookingId === 'undefined' && data.reason === 'payAtStore' ? `
+                    ${data.bookingId === 'undefined' && data.reason === 'verify_card' ? `
                         <p>Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>
                     ` : ''}
                     <button class="button" onclick="buttonClicked()">Ana Sayfaya Dön</button>
