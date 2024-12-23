@@ -120,7 +120,7 @@
         function buttonClicked() {
             // Check if Webviewchannel is available
             if (typeof Webviewchannel !== 'undefined' && Webviewchannel.postMessage) {
-                Webviewchannel.postMessage('home', '*');
+                Webviewchannel.postMessage('home');
             } else {
                 // Fallback behavior
                 console.warn('Webviewchannel is not defined. Redirecting to home.');
