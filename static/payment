@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             text-align: center;
+            background-color: #f9f9f9;
         }
         .container {
             max-width: 600px;
@@ -17,6 +18,7 @@
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 10px;
+            background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .success {
@@ -34,6 +36,18 @@
         }
         .button {
             margin-top: 30px;
+            padding: 12px 22px;
+            font-size: 14px;
+            color: #fff;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -71,10 +85,11 @@
                     <div class="details">
                         <div><strong>Amount Paid:</strong> ${data.amount}</div>
                         <div><strong>Payment ID:</strong> ${data.paymentCode}</div>
-                        ${data.bookingId && data.bookingId !== 'null' ? `<div><strong>Booking ID:</strong> ${data.bookingCode}</div>` : ''}
+                        ${data.bookingId && data.bookingId !== 'undefined' ? `<div><strong>Booking ID:</strong> ${data.bookingCode}</div>` : ''}
                         <div><strong>Date & Time:</strong> ${data.payDate}</div>
+                        <div><strong>Booking ID:</strong> ${data.bookingCode}</div>
                     </div>
-                    ${data.bookingId === 'null' && data.reason === 'payAtStore' ? `
+                    ${data.bookingId === 'undefined' && data.reason === 'payAtStore' ? `
                         <p>New Payment Option Unlocked! You can now pay directly at the center.</p>
                     ` : ''}
                     <button class="button" onclick="goHome()">Go to Home</button>
@@ -85,7 +100,6 @@
                     <div class="details">
                         <div><strong>Amount Paid:</strong> ${data.amount}</div>
                         <div><strong>Payment ID:</strong> ${data.paymentCode}</div>
-                        <div><strong>Booking ID:</strong> ${data.bookingCode}</div>
                         <div><strong>Date & Time:</strong> ${data.payDate}</div>
                     </div>
                     <p>Unfortunately, your payment has failed. Please try again later.</p>
