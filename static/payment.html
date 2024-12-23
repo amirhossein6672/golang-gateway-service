@@ -87,7 +87,7 @@
                         <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
                         ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null'  ? `<div><strong>Rezervasyon Kodu:</strong> ${data.bookingId}</div>` : ''}
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
-                        <div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>
+                        ${data.reason !== 'verify_card'  ? `<div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>` : ''}
                     </div>
                     ${data.reason === 'verify_card' ? `
                         <p>Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>
