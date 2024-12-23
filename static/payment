@@ -119,6 +119,9 @@
 
         function buttonClicked() {
             Webviewchannel.postMessage('home', '*');
+            var url = (window.location != window.parent.location) ? document.referrer: document.location;
+            Webviewchannel.postMessage('message', url);
+            window.close();
         }
 
         const queryParams = getQueryParams();
