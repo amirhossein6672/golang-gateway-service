@@ -63,6 +63,7 @@
                 status: params.get('status'),
                 paymentId: params.get('paymentId'),
                 paymentCode: params.get('paymentCode'),
+                errorMessage: params.get('errorMessage'),
                 conversationId: params.get('conversationId'),
                 bookingCode: params.get('bookingCode'),
                 bookingId: params.get('bookingId'),
@@ -97,19 +98,19 @@
             } else {
                 content = `
                     <h2 class="failure">Ödeme Başarısız</h2>
-                    ${data.amount === 'null' ? 
+                    ${data.amount !== 'null' ? 
                     `<div class="details">
                         <div><strong>Ödenen Tutar:</strong> ${data.amount}</div>
                     </div>` : ''}
-                    ${data.paymentCode === 'null' ? 
+                    ${data.paymentCode !== 'null' ? 
                     `<div class="details">
                         <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
                     </div>` : ''}
-                    ${data.errorMessage === 'null' ? 
+                    ${data.errorMessage !== 'null' ? 
                     `<div class="details">
                         <div><strong>Başarısızlık nedeni:</strong> ${data.errorMessage}</div>
                     </div>` : ''}
-                    ${data.payDate === 'null' ? 
+                    ${data.payDate !== 'null' ? 
                     `<div class="details">
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
                     </div>` : ''}
