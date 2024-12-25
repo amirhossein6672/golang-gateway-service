@@ -105,6 +105,10 @@
                     `<div class="details">
                         <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
                     </div>` : ''}
+                    ${data.errorMessage === 'null' ? 
+                    `<div class="details">
+                        <div><strong>Başarısızlık nedeni:</strong> ${data.errorMessage}</div>
+                    </div>` : ''}
                     ${data.payDate === 'null' ? 
                     `<div class="details">
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
