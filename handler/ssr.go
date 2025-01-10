@@ -45,8 +45,8 @@ func ServeProfilePage(w http.ResponseWriter, r *http.Request) {
 	profileData.Title = profileData.Username + "'s Profile"
 	profileData.Description = "Learn more about " + profileData.Username + " on our site."
 	profileData.Keywords = "user, profile, details"
-	profileData.Author = "example"
-	profileData.CanonicalURL = "https://example.com/" + profileData.Username
+	profileData.Author = "beauticket"
+	profileData.CanonicalURL = "https://beauticket.app/" + profileData.Username
 	profileData.CreatedAtSrt = profileData.CreatedAt.Format("Monday, January 2, 2006 at 3:04 PM")
 
 	// Parse the HTML template
