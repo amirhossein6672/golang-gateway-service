@@ -18,7 +18,7 @@ func GoogleMapProxy() http.Handler {
 
 		// Start the HTTP serve
 		fullPathString := strings.Split(r.URL.Path, "googleapis/")[1]
-		log.Printf(
+		log.Printf(fullPathString)
 
 		target, err = url.Parse("https://maps.googleapis.com/" + fullPathString + "&key=" + os.Getenv("GOOGLE_MAP_WEB_APIKEY"))
 
