@@ -74,6 +74,9 @@ func main() {
 	// API reverse proxy
 	router.PathPrefix("/").Handler(handler.BackendProxy())
 
+	// Google Maps API reverse proxy
+	router.PathPrefix("/googleapis/").Handler(handler.GoogleMapProxy())
+
 	// Server-Side Rendering for profile page, capture the username in the URL
 	router.HandleFunc("/@{username}", handler.ServeProfilePage)
 
