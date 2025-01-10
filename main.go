@@ -71,11 +71,11 @@ func main() {
 	// Serve static files (HTML, CSS, JS)
 	router.PathPrefix("/static/").Handler(handler.ServeStatic("static"))
 
-	// API reverse proxy
-	router.PathPrefix("/").Handler(handler.BackendProxy())
-
 	// Google Maps API reverse proxy
 	router.PathPrefix("/googleapis/").Handler(handler.GoogleMapProxy())
+	
+	// API reverse proxy
+	router.PathPrefix("/").Handler(handler.BackendProxy())
 
 	// Server-Side Rendering for profile page, capture the username in the URL
 	router.HandleFunc("/@{username}", handler.ServeProfilePage)
