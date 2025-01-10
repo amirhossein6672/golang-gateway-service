@@ -9,37 +9,35 @@ import (
 	"strings"
 )
 
-// GoogleMapProxy creates a reverse proxy that routes requests based on URL path
 func GoogleMapProxy() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		pathAfterGoogleapis := strings.TrimPrefix(r.URL.Path, "/googleapis/")
-		
-		// Construct the target URL
-		targetBase := "https://maps.googleapis.com/"
-		targetURL, err := url.Parse(targetBase + pathAfterGoogleapis)
-		if err != nil {
-			log.Printf("⚠️ Error parsing URL: %v", err)
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			return
-		}
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        // Extract the relevant portion of the path after "googleapis/"
+        pathAfterGoogleapis := strings.TrimPrefix(r.URL.Path, "/googleapis/")
+        
+        // Base target URL
+        targetBase := "https://maps.googleapis.com/"
+        
+        // Construct the target URL
+        targetURL, err := url.Parse(targetBase)
+        if err != nil {
+            log.Printf("⚠️ Error parsing target base URL: %v", err)
+            http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+            return
+        }
+        
+        // Update target URL's Path and Query
+        targetURL.Path += pathAfterGoogleapis
+        targetURL.RawQuery = r.URL.RawQuery + "&key=" + os.Getenv("GOOGLE_MAP_WEB_APIKEY")
 
-		// Copy query parameters from the original request
-		query := r.URL.Query()
-		query.Set("key", os.Getenv("GOOGLE_MAP_WEB_APIKEY")) // Add the API key
-		targetURL.RawQuery = query.Encode()
+        log.Printf("Proxying request to: %s", targetURL.String())
+        
+        // Create and serve the reverse proxy
+        proxy := httputil.NewSingleHostReverseProxy(targetURL)
+        proxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
+            log.Printf("Proxy error: %v", err)
+            http.Error(w, "Proxy Error: "+err.Error(), http.StatusBadGateway)
+        }
 
-		// Create a reverse proxy for the target service
-		proxy := httputil.NewSingleHostReverseProxy(targetURL)
-		proxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, e error) {
-			log.Printf("⚠️ Proxy error: %v", e)
-			http.Error(w, "Proxy error: "+e.Error(), http.StatusBadGateway)
-		}
-
-		// Update the request's URL and Host to point to the target
-		r.URL = targetURL
-		r.Host = targetURL.Host
-
-		// Serve the proxy
-		proxy.ServeHTTP(w, r)
-	})
+        proxy.ServeHTTP(w, r)
+    })
 }
