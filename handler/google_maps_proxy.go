@@ -1,43 +1,75 @@
 package handler
 
 import (
+	"io"
 	"log"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 	"strings"
 )
 
 func GoogleMapProxy() http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        // Extract the relevant portion of the path after "googleapis/"
-        pathAfterGoogleapis := strings.TrimPrefix(r.URL.Path, "/googleapis/")
-        
-        // Base target URL
-        targetBase := "https://maps.googleapis.com/"
-        
-        // Construct the target URL
-        targetURL, err := url.Parse(targetBase)
-        if err != nil {
-            log.Printf("⚠️ Error parsing target base URL: %v", err)
-            http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-            return
-        }
-        
-        // Update target URL's Path and Query
-        targetURL.Path += pathAfterGoogleapis
-        targetURL.RawQuery = r.URL.RawQuery + "&key=" + os.Getenv("GOOGLE_MAP_WEB_APIKEY")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Extract the relevant portion of the path after "googleapis/"
+		pathAfterGoogleapis := strings.TrimPrefix(r.URL.Path, "/googleapis/")
+		
+		// Base target URL
+		targetBase := "https://maps.googleapis.com/"
+		
+		// Construct the target URL
+		targetURL, err := url.Parse(targetBase)
+		if err != nil {
+			log.Printf("⚠️ Error parsing target base URL: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		
+		// Update target URL's Path and Query
+		targetURL.Path += pathAfterGoogleapis
+		targetURL.RawQuery = r.URL.RawQuery + "&key=" + os.Getenv("GOOGLE_MAP_WEB_APIKEY")
 
-        log.Printf("Proxying request to: %s", targetURL.String())
-        
-        // Create and serve the reverse proxy
-        proxy := httputil.NewSingleHostReverseProxy(targetURL)
-        proxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, err error) {
-            log.Printf("Proxy error: %v", err)
-            http.Error(w, "Proxy Error: "+err.Error(), http.StatusBadGateway)
-        }
+		log.Printf("Sending request to: %s", targetURL.String())
 
-        proxy.ServeHTTP(w, r)
-    })
+		// Create a new HTTP request to the target API
+		req, err := http.NewRequest(r.Method, targetURL.String(), r.Body)
+		if err != nil {
+			log.Printf("⚠️ Error creating request: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		// Copy headers from the original request
+		for key, values := range r.Header {
+			for _, value := range values {
+				req.Header.Add(key, value)
+			}
+		}
+
+		// Perform the request using an HTTP client
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			log.Printf("⚠️ Error performing request: %v", err)
+			http.Error(w, "Failed to fetch data from Google API", http.StatusBadGateway)
+			return
+		}
+		defer resp.Body.Close()
+
+		// Copy the response status code
+		w.WriteHeader(resp.StatusCode)
+
+		// Copy the response headers
+		for key, values := range resp.Header {
+			for _, value := range values {
+				w.Header().Add(key, value)
+			}
+		}
+
+		// Copy the response body
+		_, err = io.Copy(w, resp.Body)
+		if err != nil {
+			log.Printf("⚠️ Error copying response body: %v", err)
+		}
+	})
 }
