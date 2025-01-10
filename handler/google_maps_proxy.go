@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"compress/gzip"
 	"io"
 	"log"
 	"net/http"
@@ -61,13 +62,31 @@ func GoogleMapProxy() http.Handler {
 
 		// Copy the response headers
 		for key, values := range resp.Header {
+			// Skip Content-Encoding header if gzip to avoid double compression
+			if key == "Content-Encoding" && values[0] == "gzip" {
+				continue
+			}
 			for _, value := range values {
 				w.Header().Add(key, value)
 			}
 		}
 
+		// Handle gzip-encoded responses
+		var reader io.ReadCloser
+		if resp.Header.Get("Content-Encoding") == "gzip" {
+			reader, err = gzip.NewReader(resp.Body)
+			if err != nil {
+				log.Printf("⚠️ Error decompressing response: %v", err)
+				http.Error(w, "Failed to decompress response", http.StatusInternalServerError)
+				return
+			}
+			defer reader.Close()
+		} else {
+			reader = resp.Body
+		}
+
 		// Copy the response body
-		_, err = io.Copy(w, resp.Body)
+		_, err = io.Copy(w, reader)
 		if err != nil {
 			log.Printf("⚠️ Error copying response body: %v", err)
 		}
