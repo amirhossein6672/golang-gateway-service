@@ -6,8 +6,10 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    networks:  # Associate the service with a network
-      - beauticket_backend
+    networks:  
+      - default
 
-networks:  # Define networks at the top-level
-  beauticket_backend:
+networks:
+  default:
+    external:
+      name: beauticket_backend
