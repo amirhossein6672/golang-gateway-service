@@ -1,14 +1,14 @@
 package middleware
 
 import (
+	"bytes"
+	"fmt"
+	"io"
 	"log"
 	"log/slog"
 	"net/http"
-	"time"
-	"fmt"
-	"io"
-	"bytes"
 	"strings"
+	"time"
 )
 
 // wrappedWriter wraps ResponseWriter to capture the status code
@@ -44,7 +44,7 @@ func Logging(next http.Handler) http.Handler {
 		r.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		next.ServeHTTP(wrapped, r) // Proceed to the next handler
-		if strings.Contains(fmt.Sprintf("%v", r.Header) ,"uptimerobot") == false {
+		if strings.Contains(fmt.Sprintf("%v", r.Header), "uptimerobot") == false {
 			// Log the request details and response status
 			log.Println(
 				"➡️",
@@ -57,16 +57,28 @@ func Logging(next http.Handler) http.Handler {
 			)
 
 			// Log the request details
-			log.Println(
-				"📥",
-				"request details",
-				slog.String("method", r.Method),
-				slog.String("path", r.URL.Path),
-				slog.String("headers", fmt.Sprintf("%v", r.Header)),
-				slog.String("body", string(bodyBytes)),
-				slog.String("queryParams", r.URL.RawQuery),
-				slog.String("xff", r.Header.Get("X-Forwarded-For")),
-			)
+			if strings.Contains(fmt.Sprintf("%v", r.URL.Path), "file") == false {
+				log.Println(
+					"📥",
+					"request details",
+					slog.String("method", r.Method),
+					slog.String("path", r.URL.Path),
+					slog.String("headers", fmt.Sprintf("%v", r.Header)),
+					slog.String("body", string(bodyBytes)),
+					slog.String("queryParams", r.URL.RawQuery),
+					slog.String("xff", r.Header.Get("X-Forwarded-For")),
+				)
+			} else {
+				log.Println(
+					"📥",
+					"request details",
+					slog.String("method", r.Method),
+					slog.String("path", r.URL.Path),
+					slog.String("headers", fmt.Sprintf("%v", r.Header)),
+					slog.String("queryParams", r.URL.RawQuery),
+					slog.String("xff", r.Header.Get("X-Forwarded-For")),
+				)
+			}
 
 			// Log the response details
 			log.Println(
