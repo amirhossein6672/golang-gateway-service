@@ -36,6 +36,8 @@ func FileProxy() http.Handler {
 			return
 		}
 
+		log.Printf("Sending request to: %s", target.String())
+
 		// Create a reverse proxy for the target service
 		proxy := httputil.NewSingleHostReverseProxy(target)
 		proxy.ErrorHandler = func(w http.ResponseWriter, r *http.Request, e error) {
