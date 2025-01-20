@@ -75,7 +75,7 @@ func main() {
 	router.PathPrefix("/googleapis/").Handler(handler.GoogleMapProxy())
 	
 	// files API reverse proxy
-	router.PathPrefix("/files/").Handler(handler.FileProxy())
+	// router.PathPrefix("/files/").Handler(handler.FileProxy())
 	
 	// API reverse proxy
 	router.PathPrefix("/").Handler(handler.BackendProxy())
