@@ -93,7 +93,7 @@
                     ${data.reason === 'verify_card' ? `
                         <p>Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>
                     ` : ''}
-                    <button class="button" onclick="buttonClicked()">Ana Sayfaya Dön</button>
+                    <button class="button" onclick="buttonClickedSuccess()">Ana Sayfaya Dön</button>
                 `;
             } else {
                 content = `
@@ -115,14 +115,14 @@
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
                     </div>` : ''}
                     <p>Maalesef ödemeniz başarısız oldu. Lütfen daha sonra tekrar deneyiniz.</p>
-                    <button class="button" onclick="buttonClicked()">Ana Sayfaya Dön</button>
+                    <button class="button" onclick="buttonClickedFailed()">Ana Sayfaya Dön</button>
                 `;
             }
 
             container.innerHTML = content;
         }
 
-        function buttonClicked() {
+        function buttonClickedSuccess() {
             // Webviewchannel'ın mevcut olup olmadığını kontrol edin
             if (typeof Webviewchannel !== 'undefined' && Webviewchannel.postMessage) {
                 Webviewchannel.postMessage('home');
@@ -130,6 +130,21 @@
                 // Yedek davranış
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
                 postMessage('home', '*');
+                window.location.href = '/';
+                window.location.reload();
+            }
+        }
+
+        function buttonClickedFailed() {
+            // Webviewchannel'ın mevcut olup olmadığını kontrol edin
+            if (typeof Webviewchannel !== 'undefined' && Webviewchannel.postMessage) {
+                Webviewchannel.postMessage('nok');
+            } else {
+                // Yedek davranış
+                console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
+                postMessage('nok', '*');
+                window.location.href = '/';
+                window.location.reload();
             }
         }
 
