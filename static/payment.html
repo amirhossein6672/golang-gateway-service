@@ -130,7 +130,8 @@
                 // Yedek davranış
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
                 // postMessage('home', '*');
-                parent.history.back();
+                window.location.href = '/';
+                window.location.reload();
             }
         }
 
@@ -142,7 +143,8 @@
                 // Yedek davranış
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
                 // postMessage('nok', '*');
-                parent.history.back();
+                window.location.href = '/';
+                window.location.reload();
             }
         }
 
