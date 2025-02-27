@@ -6,63 +6,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ödeme Sonucu</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0 25px;
-            text-align: center;
             background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            max-width: 800px;
+            width: 100%;
             background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
 
-        .success {
-            color: green;
+        .content {
+            width: 50%;
+            padding-right: 20px;
         }
 
-        .failure {
-            color: red;
+        .success-title {
+            color: #00c48c;
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .failure-title {
+            color: #ff5252;
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .status-message {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
 
         .details {
-            text-align: left;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
-        .details div {
-            margin-bottom: 10px;
+        .detail-item {
+            margin-bottom: 15px;
+            display: flex;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            margin-right: 5px;
+        }
+
+        .detail-value {
+            color: #333;
+        }
+
+        .illustration {
+            width: 45%;
+            text-align: center;
+        }
+
+        .illustration img {
+            max-width: 100%;
+            height: auto;
         }
 
         .button {
-            margin-top: 30px;
-            padding: 12px 22px;
-            font-size: 14px;
-            color: #fff;
-            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            display: inline-block;
+            background: none;
             border: none;
-            border-radius: 15px;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 15px 50px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 30px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #e9e9e9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 30px 20px;
+            }
+
+            .content, .illustration {
+                width: 100%;
+            }
+
+            .content {
+                padding-right: 0;
+                order: 2;
+            }
+
+            .illustration {
+                margin-bottom: 30px;
+                order: 1;
+            }
+
+            .success-title, .failure-title {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .status-message {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .detail-item {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="container" id="payment-result">
-        <!-- İçerik dinamik olarak eklenecek -->
+        <!-- Content will be dynamically added here -->
     </div>
 
     <script>
@@ -91,40 +182,80 @@
 
             if (data.status === 'success') {
                 content = `
-                    <h2 class="success">Ödeme Başarılı</h2>
-                    <div class="details">
-                        <div><strong>Ödenen Tutar:</strong> ${data.amount}</div>
-                        <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
-                        ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null' ? `<div><strong>Rezervasyon Kodu:</strong> ${data.bookingId}</div>` : ''}
-                        ${data.reason === 'purchase' ? `<div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>` : ''}
-                        <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
+                    <div class="content">
+                        <h1 class="success-title">Teşekkürler! Ödeme Alındı</h1>
+                        <p class="status-message">Ödemeniz başarıyla gerçekleşti!</p>
+                        
+                        <div class="details">
+                            <div class="detail-item">
+                                <span class="detail-label">Ödenen Tutar :</span>
+                                <span class="detail-value">${data.amount || ''}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Ödeme Numara :</span>
+                                <span class="detail-value">${data.paymentCode || ''}</span>
+                            </div>
+                            ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null' ? 
+                                `<div class="detail-item">
+                                    <span class="detail-label">Rezervasyon Kodu :</span>
+                                    <span class="detail-value">${data.bookingId}</span>
+                                </div>` : ''}
+                            ${data.reason === 'purchase' && data.bookingCode ? 
+                                `<div class="detail-item">
+                                    <span class="detail-label">Rezervasyon Numara :</span>
+                                    <span class="detail-value">${data.bookingCode}</span>
+                                </div>` : ''}
+                            <div class="detail-item">
+                                <span class="detail-label">Tarih ve Saat :</span>
+                                <span class="detail-value">${data.payDate || ''}</span>
+                            </div>
+                        </div>
+                        
+                        ${data.reason === 'verify_card' ? 
+                            `<p class="status-message">Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>` : ''}
+                        
+                        <button class="button" onclick="buttonClickedSuccess()">Ana Sayfaya Dön</button>
                     </div>
-                    ${data.reason === 'verify_card' ? `
-                        <p>Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>
-                    ` : ''}
-                    <button class="button" onclick="buttonClickedSuccess()">Ana Sayfaya Dön</button>
+                    <div class="illustration">
+                        <img src="successfulPayment.svg" alt="Ödeme Başarılı">
+                    </div>
                 `;
             } else {
                 content = `
-                    <h2 class="failure">Ödeme Başarısız</h2>
-                    ${data.amount && data.amount !== 'undefined' && data.amount !== 'null' ?
-                        `<div class="details">
-                        <div><strong>Ödenen Tutar:</strong> ${data.amount}</div>
-                    </div>` : ''}
-                    ${data.paymentCode && data.paymentCode !== 'undefined' && data.paymentCode !== 'null' ?
-                        `<div class="details">
-                        <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
-                    </div>` : ''}
-                    ${data.errorMessage && data.errorMessage !== 'undefined' && data.errorMessage !== 'null' ?
-                        `<div class="details">
-                        <div><strong>Başarısızlık nedeni:</strong> ${data.errorMessage}</div>
-                    </div>` : ''}
-                    ${data.payDate && data.payDate !== 'undefined' && data.payDate !== 'null' ?
-                        `<div class="details">
-                        <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
-                    </div>` : ''}
-                    <p>Maalesef ödemeniz başarısız oldu. Lütfen daha sonra tekrar deneyiniz.</p>
-                    <button class="button" onclick="buttonClickedFailed()">Ana Sayfaya Dön</button>
+                    <div class="content">
+                        <h1 class="failure-title">Ödeme Başarısız</h1>
+                        <p class="status-message">Üzgünüz, ödemeniz gerçekleşmedi</p>
+                        
+                        <div class="details">
+                            ${data.errorMessage && data.errorMessage !== 'undefined' && data.errorMessage !== 'null' ? 
+                                `<div class="detail-item">
+                                    <span class="detail-label">Başarısızlık Nedeni :</span>
+                                    <span class="detail-value">${data.errorMessage}</span>
+                                </div>` : ''}
+                            ${data.amount && data.amount !== 'undefined' && data.amount !== 'null' ? 
+                                `<div class="detail-item">
+                                    <span class="detail-label">Ödenen Tutar :</span>
+                                    <span class="detail-value">${data.amount}</span>
+                                </div>` : ''}
+                            ${data.paymentCode && data.paymentCode !== 'undefined' && data.paymentCode !== 'null' ? 
+                                `<div class="detail-item">
+                                    <span class="detail-label">Ödeme Numara :</span>
+                                    <span class="detail-value">${data.paymentCode}</span>
+                                </div>` : ''}
+                            ${data.payDate && data.payDate !== 'undefined' && data.payDate !== 'null' ? 
+                                `<div class="detail-item">
+                                    <span class="detail-label">Tarih ve Saat :</span>
+                                    <span class="detail-value">${data.payDate}</span>
+                                </div>` : ''}
+                        </div>
+                        
+                        <p class="status-message">Lütfen daha sonra tekrar deneyiniz.</p>
+                        
+                        <button class="button" onclick="buttonClickedFailed()">Ana Sayfaya Dön</button>
+                    </div>
+                    <div class="illustration">
+                        <img src="failedPayment.svg" alt="Ödeme Başarısız">
+                    </div>
                 `;
             }
 
@@ -132,29 +263,19 @@
         }
 
         function buttonClickedSuccess() {
-            // Webviewchannel'ın mevcut olup olmadığını kontrol edin
             if (typeof Webviewchannel !== 'undefined' && Webviewchannel.postMessage) {
                 Webviewchannel.postMessage('home');
             } else {
-                // Yedek davranış
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
-                // postMessage('home', '*');
-                window.location.href = '/';
-                window.location.reload();
+                window.top.postMessage({ action: 'reloadBeauticketIframe' }, '*');
             }
         }
 
         function buttonClickedFailed() {
-            // Webviewchannel'ın mevcut olup olmadığını kontrol edin
             if (typeof Webviewchannel !== 'undefined' && Webviewchannel.postMessage) {
                 Webviewchannel.postMessage('nok');
             } else {
-                // Yedek davranış
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
-                // postMessage('nok', '*');
-                // window.location.href = '/';
-                // window.location.reload(); 
-                
                 window.top.postMessage({ action: 'reloadBeauticketIframe' }, '*');
             }
         }
