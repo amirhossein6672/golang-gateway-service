@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             text-align: center;
             background-color: #f9f9f9;
         }
+
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -21,19 +23,24 @@
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .success {
             color: green;
         }
+
         .failure {
             color: red;
         }
+
         .details {
             text-align: left;
             margin-top: 20px;
         }
+
         .details div {
             margin-bottom: 10px;
         }
+
         .button {
             margin-top: 30px;
             padding: 12px 22px;
@@ -45,12 +52,14 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
+
 <body>
     <div class="container" id="payment-result">
         <!-- İçerik dinamik olarak eklenecek -->
@@ -86,8 +95,8 @@
                     <div class="details">
                         <div><strong>Ödenen Tutar:</strong> ${data.amount}</div>
                         <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
-                        ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null'  ? `<div><strong>Rezervasyon Kodu:</strong> ${data.bookingId}</div>` : ''}
-                        ${data.reason === 'purchase'  ? `<div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>` : ''}
+                        ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null' ? `<div><strong>Rezervasyon Kodu:</strong> ${data.bookingId}</div>` : ''}
+                        ${data.reason === 'purchase' ? `<div><strong>Rezervasyon Numara:</strong> ${data.bookingCode}</div>` : ''}
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
                     </div>
                     ${data.reason === 'verify_card' ? `
@@ -99,19 +108,19 @@
                 content = `
                     <h2 class="failure">Ödeme Başarısız</h2>
                     ${data.amount && data.amount !== 'undefined' && data.amount !== 'null' ?
-                    `<div class="details">
+                        `<div class="details">
                         <div><strong>Ödenen Tutar:</strong> ${data.amount}</div>
                     </div>` : ''}
                     ${data.paymentCode && data.paymentCode !== 'undefined' && data.paymentCode !== 'null' ?
-                    `<div class="details">
+                        `<div class="details">
                         <div><strong>Ödeme Numara:</strong> ${data.paymentCode}</div>
                     </div>` : ''}
                     ${data.errorMessage && data.errorMessage !== 'undefined' && data.errorMessage !== 'null' ?
-                    `<div class="details">
+                        `<div class="details">
                         <div><strong>Başarısızlık nedeni:</strong> ${data.errorMessage}</div>
                     </div>` : ''}
                     ${data.payDate && data.payDate !== 'undefined' && data.payDate !== 'null' ?
-                    `<div class="details">
+                        `<div class="details">
                         <div><strong>Tarih ve Saat:</strong> ${data.payDate}</div>
                     </div>` : ''}
                     <p>Maalesef ödemeniz başarısız oldu. Lütfen daha sonra tekrar deneyiniz.</p>
@@ -145,6 +154,11 @@
                 // postMessage('nok', '*');
                 window.location.href = '/';
                 window.location.reload();
+                const iframe = document.getElementById("beauticket-iframe");
+
+                if (iframe) {
+                    iframe.src = iframe.src;
+                }
             }
         }
 
@@ -152,4 +166,5 @@
         renderResult(queryParams);
     </script>
 </body>
+
 </html>
