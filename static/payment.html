@@ -92,11 +92,10 @@
         .button {
             display: inline-block;
             background: none;
-            border: none;
-            background-color: #f5f5f5;
+            border: 1px solid #858585;
             color: #333;
             padding: 15px 50px;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             margin-top: 30px;
@@ -115,7 +114,8 @@
                 padding: 30px 20px;
             }
 
-            .content, .illustration {
+            .content,
+            .illustration {
                 width: 100%;
             }
 
@@ -129,7 +129,8 @@
                 order: 1;
             }
 
-            .success-title, .failure-title {
+            .success-title,
+            .failure-title {
                 font-size: 28px;
                 text-align: center;
             }
@@ -137,10 +138,6 @@
             .status-message {
                 font-size: 16px;
                 text-align: center;
-            }
-
-            .detail-item {
-                flex-direction: column;
             }
 
             .button {
@@ -195,13 +192,13 @@
                                 <span class="detail-label">Ödeme Numara :</span>
                                 <span class="detail-value">${data.paymentCode || ''}</span>
                             </div>
-                            ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null' ? 
-                                `<div class="detail-item">
+                            ${data.bookingId && data.bookingId !== 'undefined' && data.bookingId !== 'null' ?
+                        `<div class="detail-item">
                                     <span class="detail-label">Rezervasyon Kodu :</span>
                                     <span class="detail-value">${data.bookingId}</span>
                                 </div>` : ''}
-                            ${data.reason === 'purchase' && data.bookingCode ? 
-                                `<div class="detail-item">
+                            ${data.reason === 'purchase' && data.bookingCode ?
+                        `<div class="detail-item">
                                     <span class="detail-label">Rezervasyon Numara :</span>
                                     <span class="detail-value">${data.bookingCode}</span>
                                 </div>` : ''}
@@ -211,15 +208,13 @@
                             </div>
                         </div>
                         
-                        ${data.reason === 'verify_card' ? 
-                            `<p class="status-message">Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>` : ''}
+                        ${data.reason === 'verify_card' ?
+                        `<p class="status-message">Yeni bir ödeme seçeneği açıldı! Artık merkezde ödeme yapabilirsiniz.</p>` : ''}
                         
                         <button class="button" onclick="buttonClickedSuccess()">Ana Sayfaya Dön</button>
                     </div>
-                    <div class="illustration">
-                        <img src="successfulPayment.svg" alt="Ödeme Başarılı">
-                    </div>
-                `;
+                         <img class="illustration" src="successfulPayment.svg" alt="Ödeme Başarılı">
+                 `;
             } else {
                 content = `
                     <div class="content">
@@ -227,23 +222,23 @@
                         <p class="status-message">Üzgünüz, ödemeniz gerçekleşmedi</p>
                         
                         <div class="details">
-                            ${data.errorMessage && data.errorMessage !== 'undefined' && data.errorMessage !== 'null' ? 
-                                `<div class="detail-item">
+                            ${data.errorMessage && data.errorMessage !== 'undefined' && data.errorMessage !== 'null' ?
+                        `<div class="detail-item">
                                     <span class="detail-label">Başarısızlık Nedeni :</span>
                                     <span class="detail-value">${data.errorMessage}</span>
                                 </div>` : ''}
-                            ${data.amount && data.amount !== 'undefined' && data.amount !== 'null' ? 
-                                `<div class="detail-item">
+                            ${data.amount && data.amount !== 'undefined' && data.amount !== 'null' ?
+                        `<div class="detail-item">
                                     <span class="detail-label">Ödenen Tutar :</span>
                                     <span class="detail-value">${data.amount}</span>
                                 </div>` : ''}
-                            ${data.paymentCode && data.paymentCode !== 'undefined' && data.paymentCode !== 'null' ? 
-                                `<div class="detail-item">
+                            ${data.paymentCode && data.paymentCode !== 'undefined' && data.paymentCode !== 'null' ?
+                        `<div class="detail-item">
                                     <span class="detail-label">Ödeme Numara :</span>
                                     <span class="detail-value">${data.paymentCode}</span>
                                 </div>` : ''}
-                            ${data.payDate && data.payDate !== 'undefined' && data.payDate !== 'null' ? 
-                                `<div class="detail-item">
+                            ${data.payDate && data.payDate !== 'undefined' && data.payDate !== 'null' ?
+                        `<div class="detail-item">
                                     <span class="detail-label">Tarih ve Saat :</span>
                                     <span class="detail-value">${data.payDate}</span>
                                 </div>` : ''}
@@ -253,10 +248,8 @@
                         
                         <button class="button" onclick="buttonClickedFailed()">Ana Sayfaya Dön</button>
                     </div>
-                    <div class="illustration">
-                        <img src="failedPayment.svg" alt="Ödeme Başarısız">
-                    </div>
-                `;
+                         <img class="illustration" src="failedPayment.svg" alt="Ödeme Başarısız">
+                 `;
             }
 
             container.innerHTML = content;
