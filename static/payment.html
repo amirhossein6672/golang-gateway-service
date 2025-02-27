@@ -154,6 +154,10 @@
                 // postMessage('nok', '*');
                 // window.location.href = '/';
                 // window.location.reload(); 
+
+                // Go up two layers to the parent window of the top page
+                const topWindow = window.top;
+                
                 // Find the iframe in the top page
                 const parentIframe = topWindow.document.getElementById('beauticket-iframe');
                 console.info(parentIframe === null);
