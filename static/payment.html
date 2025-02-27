@@ -152,12 +152,32 @@
                 // Yedek davranış
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
                 // postMessage('nok', '*');
-                window.location.href = '/';
-                window.location.reload();
-                const iframe = document.getElementById("beauticket-iframe");
+                // window.location.href = '/';
+                // window.location.reload();
+                var iframe = document.getElementById("beauticket-iframe");
+                console.info(iframe === null);
+                if (iframe) {
+                    iframe.src = iframe.src;
+                }
+                iframe = parent.getElementById("beauticket-iframe");
+                console.info(iframe === null);
+                if (iframe) {
+                    iframe.src = iframe.src;
+                }
+                iframe = window.getElementById("beauticket-iframe");
+                console.info(iframe === null);
 
                 if (iframe) {
                     iframe.src = iframe.src;
+                }
+                const topWindow = window.top;
+
+                // Find the iframe in the top page
+                const parentIframe = topWindow.document.getElementById('beauticket-iframe');
+                console.info(parentIframe === null);
+
+                if (parentIframe) {
+                    parentIframe.src = parentIframe.src;  // Reload the top iframe
                 }
             }
         }
