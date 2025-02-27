@@ -153,25 +153,7 @@
                 console.warn('Webviewchannel tanımlı değil. Ana sayfaya yönlendiriliyor.');
                 // postMessage('nok', '*');
                 // window.location.href = '/';
-                // window.location.reload();
-                var iframe = document.getElementById("beauticket-iframe");
-                console.info(iframe === null);
-                if (iframe) {
-                    iframe.src = iframe.src;
-                }
-                iframe = parent.getElementById("beauticket-iframe");
-                console.info(iframe === null);
-                if (iframe) {
-                    iframe.src = iframe.src;
-                }
-                iframe = window.getElementById("beauticket-iframe");
-                console.info(iframe === null);
-
-                if (iframe) {
-                    iframe.src = iframe.src;
-                }
-                const topWindow = window.top;
-
+                // window.location.reload(); 
                 // Find the iframe in the top page
                 const parentIframe = topWindow.document.getElementById('beauticket-iframe');
                 console.info(parentIframe === null);
